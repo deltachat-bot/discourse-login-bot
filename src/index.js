@@ -3,7 +3,7 @@ const oauthDB = require('./database')
 const webApp = require('./web_app')
 const config = require('config')
 
-const dc_started = deltachat.start((_, _) => {})
+const dc_started = deltachat.start((_, __) => {})
 
 // Setup the web app.
 const server = require('http').createServer(webApp)
