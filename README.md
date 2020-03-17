@@ -21,7 +21,7 @@ To authenticate users that want to login at your Discourse instance will be redi
   "oauth": {
     "client_id": "theRandomIdForYourDiscourseInstance",
     "client_secret": "somethingSecure",
-    "redirect_uris": ["callbackOfYourDiscourseInstance"]
+    "redirect_uri": "https://your.discourse.instance/callback"
   }
 }
 ```
