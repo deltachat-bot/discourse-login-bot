@@ -32,7 +32,7 @@ router.get('/authorize', ensureAuthenticated, async (req, res) => {
     return
   }
 
-  if (params.redirect_uri !== config.get('oauth.redirect_uri')) {
+  if (config.get('oauth.redirect_uri').indexOf(params.redirect_uri) === -1) {
     log("Unknown redirect_uri, denying access.")
     res.sendStatus(400)
     return
