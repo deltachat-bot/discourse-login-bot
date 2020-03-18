@@ -50,9 +50,8 @@ router.get('/authorize', ensureAuthenticated, async (req, res) => {
 // Don't use the authenticating middleware here, this resource is requested
 // non-interactively by the application, which authorizes by client_id,
 // client_secret and authcode.
-router.get('/token', async (req, res) => {
+router.post('/token', async (req, res) => {
   log("Request to /token")
-  // TODO: Why is body used here? This is a GET-request, AFAIK, which shouldn't have body content.
   var params = Object.assign({}, req.body, req.query)
 
   // Check that an auth-code is given. We can stop early if it is absent.
