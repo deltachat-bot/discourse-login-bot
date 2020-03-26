@@ -12,8 +12,9 @@ To authenticate users that want to login at your Discourse instance will be redi
 ## Setup
 
 1. Install the dependencies by running `npm install`.
-2. Configure your Discourse instance to use the oauth2 provider this bot provides. Generate a random `client_id` and a random `client_secret` for it.
-2. Configure the bot by writing its email-address and password, and the oauth related information, into `config/local.json` like this:
+2. Install the [OAuth2 Plugin](https://github.com/discourse/discourse-oauth2-basic) to your Discourse instance - find out how on [meta.discourse.org](https://meta.discourse.org/t/install-plugins-in-discourse/19157)
+3. Configure your Discourse instance to use the oauth2 provider this bot provides. Choose two random strings for `client_id` and `client_secret`. More details on the Discourse settings below.
+4. Configure the bot by writing its email-address and password, and the oauth related information, into `config/local.json` like this:
 ```json
 {
   "email_address": "bot@example.net",
@@ -25,23 +26,15 @@ To authenticate users that want to login at your Discourse instance will be redi
   }
 }
 ```
-3. Optionally configure the `http_port` (that the bot should serve the web interface on) in `config/local.js` (default: 3000).
-4. Setup a HTTP daemon to reverse-proxy the bot, e.g. nginx.
+5. Optionally configure the `http_port` (that the bot should serve the web interface on) in `config/local.js` (default: 3000).
+6. Setup a HTTP daemon to reverse-proxy the bot, e.g. nginx.
 
-### Configure Discourse
+### Discourse Plugin Settings
 
-First install the oauth2 plugin by adding the following line to
-`/var/discourse/containers/app.yml` and rebuilding the container:
-
-```
-          - git clone https://github.com/discourse/discourse-oauth2-basic.git
-```
-
-#### OAuth2 Settings
-
-Then new settings show up in the admin settings. These settings need to be
-configured according to your needs. On the rights, our example configuration
-for support.delta.chat/login.testrun.org:
+After you installed the Discourse plugin in step 2, new settings show up in the
+admin settings. These settings need to be configured according to your needs.
+On the rights, our example configuration for
+support.delta.chat/login.testrun.org:
 
 ```
 oauth2 enabled: 			true
