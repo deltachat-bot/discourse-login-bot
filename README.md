@@ -28,6 +28,37 @@ To authenticate users that want to login at your Discourse instance will be redi
 3. Optionally configure the `http_port` (that the bot should serve the web interface on) in `config/local.js` (default: 3000).
 4. Setup a HTTP daemon to reverse-proxy the bot, e.g. nginx.
 
+### Configure Discourse
+
+First install the oauth2 plugin by adding the following line to
+`/var/discourse/containers/app.yml` and rebuilding the container:
+
+```
+          - git clone https://github.com/discourse/discourse-oauth2-basic.git
+```
+
+#### OAuth2 Settings
+
+Then new settings show up in the admin settings. These settings need to be
+configured according to your needs. On the rights, our example configuration
+for support.delta.chat/login.testrun.org:
+
+```
+oauth2 enabled: 			true
+oauth2 client id: 			secret
+oauth2 client secret: 			secret
+oauth2 authorize url:			https://login.testrun.org/oauth2/authorize
+oauth2 token url:			https://login.testrun.org/oauth2/token
+oauth2 token url method:		POST
+oauth2 callback user id path:		params.info.userid
+oauth2 callback user info paths:	name:params.info.username
+					email:params.info.email
+oauth2 fetch user details:		false
+oauth2 email verified:			true
+oauth2 button title:			with Delta Chat
+oauth2 allow association change:	true
+```
+
 ## Run
 
 Run the bot with `npm start`.
