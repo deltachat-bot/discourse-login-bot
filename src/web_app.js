@@ -105,6 +105,7 @@ router.post('/token', async (req, res) => {
       userid: `DeltaLoginUser${dbData.contactId}`,
       username: user.getName(),
       email: user.getAddress()
+      email_verified: true
     }
   })
 })
