@@ -43,7 +43,7 @@ oauth2 client secret: 			secret
 oauth2 authorize url:			https://login.testrun.org/oauth2/authorize
 oauth2 token url:			https://login.testrun.org/oauth2/token
 oauth2 token url method:		POST
-oauth2 callback user id path:		params.info.userid
+oauth2 callback user id path:		params.info.email
 oauth2 callback user info paths:	name:params.info.username
 					email:params.info.email
 oauth2 fetch user details:		false
