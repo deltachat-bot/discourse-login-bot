@@ -102,7 +102,6 @@ router.post('/token', async (req, res) => {
     token_type: 'bearer',
     expires_in: 1,
     info: {
-      userid: `DeltaLoginUser${dbData.contactId}`,
       username: user.getName(),
       email: user.getAddress()
     }
