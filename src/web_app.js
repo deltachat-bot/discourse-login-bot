@@ -104,6 +104,7 @@ router.post('/token', async (req, res) => {
     info: {
       username: user.getName(),
       email: user.getAddress()
+      email_verified: true
     }
   })
 })
