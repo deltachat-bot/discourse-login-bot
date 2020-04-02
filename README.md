@@ -55,3 +55,28 @@ oauth2 allow association change:	true
 ## Run
 
 Run the bot with `npm start`.
+
+
+## Background: Data flow
+
+This bot implements a minimal variant of [oauth2](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0), an <q>open standard for access delegation</q>.
+
+In order to be transparent for admins and users, here's a short explanation of what that means:
+
+1. When you click on "Login with Delta Chat", your Browser is redirected to this bot (to `/authorize`).
+2. After this bot verified your email address, it hands your browser a token and redirects it back to discourse.
+3. Your discourse instance takes this token, it's `client_id`, and it's `client_secret`, and itself sends a request to this bot (`/token`).
+4. This bot verifies the input and responds with a few details, including your email address and your "display name" from Delta Chat. E.g.
+```json
+{
+  access_token: a-random-UUID,
+  token_type: 'bearer',
+  expires_in: 1,
+  info: {
+    username: YourDisplayName,
+    email: YourEmailAddress
+  }
+}
+```
+`access_token`, `token_type`, and `expires_in` are mandatory fields in this response, they don't matter to us.
+5. That's it.
