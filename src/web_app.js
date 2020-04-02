@@ -103,8 +103,7 @@ router.post('/token', async (req, res) => {
     expires_in: 1,
     info: {
       username: user.getName(),
-      email: user.getAddress(),
-      email_verified: true
+      email: user.getAddress()
     }
   })
 })
