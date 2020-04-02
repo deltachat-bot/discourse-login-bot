@@ -103,10 +103,15 @@ router.post('/token', async (req, res) => {
     expires_in: 1,
     info: {
       username: user.getName(),
-      email: user.getAddress()
+      email: user.getAddress(),
       email_verified: true
     }
   })
+})
+
+router.use('/webhook', async (req, res) => {
+  log("body: ", req.body)
+  res.send("OK")
 })
 
 // Hook into the webApp. We could specify a sub-path here.
