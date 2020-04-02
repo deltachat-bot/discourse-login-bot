@@ -65,7 +65,7 @@ In order to be transparent for admins and users, here's a short explanation of w
 
 1. When you click on "Login with Delta Chat", your Browser is redirected to this bot (to `/authorize`).
 2. After this bot verified your email address, it hands your browser a token and redirects it back to discourse.
-3. Your discourse instance takes this token, it's `client_id`, and it's `client_secret`, and itself sends a request to this bot (`/token`).
+3. Your discourse instance takes this token, its `client_id`, and its `client_secret`, and itself sends a request to this bot (`/token`).
 4. This bot verifies the input and responds with a few details, including your email address and your "display name" from Delta Chat. E.g.
 ```json
 {
