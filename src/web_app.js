@@ -10,6 +10,7 @@ const uuid = require('uuid/v4')
 const express = require('express')
 const session = require('express-session')
 const config = require('config')
+const { apiFetch, notifierEnabled } = require('./api_fetch')
 
 // On starting up check that required config options are set.
 for (key of ['oauth.client_id', 'oauth.client_secret', 'oauth.redirect_uri']) {
@@ -108,9 +109,59 @@ router.post('/token', async (req, res) => {
   })
 })
 
-router.use('/webhook', async (req, res) => {
-  log("body: ", req.body)
-  res.send("OK")
+router.post('/webhook', async (req, res) => {
+  if (! notifierEnabled()) {
+    return res.send("OK")
+  }
+
+  // TODO: verify signature
+  try {
+    const payload = req.body
+    if (! payload.notification) {
+      return res.send("OK")
+    }
+    const notification = payload.notification
+    // 6 is private message.
+    // 9 is public post.
+    // TODO: Find out which other notification_types could be used. See <https://github.com/discourse/discourse/blob/master/app/models/notification.rb#L88>.
+    if ([6, 9].indexOf(notification.notification_type) == -1) {
+      return res.send("OK")
+    }
+
+    // Find email address of the acting discourse user.
+    const user_data = await apiFetch(`/admin/users/${notification.user_id}.json`)
+    const username = user_data.username
+    const associated_accounts_data = await apiFetch(`/users/${username}/emails.json`)
+    const associated_accounts = associated_accounts_data.associated_accounts
+    const relevant_account = associated_accounts.find((acc) => { return acc.name === 'oauth2_basic' })
+    if (! relevant_account) { return res.send("OK") }
+
+    // Find DC contact for fetched email address.
+    const email = relevant_account.description
+    const contact_ids = deltachat.getContacts(0, email)
+    const contact_id = contact_ids.find((contact_id) => { 
+      let contact = deltachat.getContact(contact_id)
+      let contact_email_addr = contact.getAddress()
+      let enabled_email_addresses = config.get('notifier.enabled_contact_email_addresses')
+      return (contact_email_addr == email && enabled_email_addresses.indexOf(contact_email_addr) > -1)
+    })
+    if (! contact_id) { return res.send("OK") }
+
+    // Find chat for contact and send message.
+    const chatlist = deltachat.getChatList(0, '', contact_id)
+    // TODO: handle the case in which there's more that one chat with a contact.
+    const chat_id = chatlist.getChatId(0)
+    const original_message_data = await apiFetch(`/posts/${notification.data.original_post_id}.json`)
+    const original_message = original_message_data.raw
+    const msg = `${notification.data.original_username} said in topic '${notification.fancy_title}': ${original_message}\n\n\nLink: https://support.delta.chat/t/${notification.slug}/${notification.topic_id}/${original_message_data.post_number}`
+    deltachat.sendMessage(chat_id, msg)
+
+  } catch (error) {
+    log('ERROR: An error happend, cannot continue:')
+    log(error)
+  }
+
+  return res.send('OK')
 })
 
 // Hook into the webApp. We could specify a sub-path here.

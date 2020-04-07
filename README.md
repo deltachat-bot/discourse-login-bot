@@ -52,6 +52,30 @@ oauth2 button title:			with Delta Chat
 oauth2 allow association change:	true
 ```
 
+
+### Notifier
+
+Optionally you can let users that authenticated via this bot receive discourse activity notifications as Delta Chat messages. Extend the main object in the config file with a block like this one:
+
+```json
+  "notifier": {
+    "enabled_contact_email_addresses": ["you@example.net", "someone@example.org"],
+    "discourse_base_url": "https://your-discourse-domain.example.org",
+    "api_key": "get_this_from_the_discouse_settings",
+    "api_username": "user_that_owns_the_api_key"
+  }
+```
+
+Generate an API key in your discourse instance at `/admin/api/keys`.
+
+To let the bot receive the notifications, set up a webhook in your discourse instance at `/admin/api/webhooks`. Use these values to configure it:
+
+* `Payload URL`: https://you-bot-domain.example.org/webhook
+* `Content Type`: application/json
+* `Select individual events`: Notification Event
+
+You probably want to check `Check TLS certificate of payload url` and `Active`, too.
+
 ## Run
 
 Run the bot with `npm start`.
