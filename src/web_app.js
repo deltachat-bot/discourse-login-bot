@@ -147,13 +147,32 @@ router.post('/webhook', async (req, res) => {
     })
     if (! contact_id) { return res.send("OK") }
 
-    // Find chat for contact and send message.
+    // TODO: listen for replies in topic-chats and send them to discourse.
+
+    const chat_name = `Forum: ${notification.fancy_title} (${notification.topic_id})`
+
+    // Find the wanted chat.
     const chatlist = deltachat.getChatList(0, '', contact_id)
-    // TODO: handle the case in which there's more that one chat with a contact.
-    const chat_id = chatlist.getChatId(0)
+    var chat_id = 0
+    for (let i=0; i < chatlist.getCount(); i++) {
+      let id = chatlist.getChatId(i)
+      let chat = deltachat.getChat(id)
+      if (chat_name == chat.getName()) {
+        chat_id = id
+        break
+      }
+    }
+    // If no matching chat exists, create it.
+    if (chat_id === 0) {
+      chat_id = deltachat.createUnverifiedGroupChat(chat_name)
+      deltachat.addContactToChat(chat_id, contact_id)
+    }
+
+    // Send the message.
     const original_message_data = await apiFetch(`/posts/${notification.data.original_post_id}.json`)
     const original_message = original_message_data.raw
-    const msg = `${notification.data.original_username} said in topic '${notification.fancy_title}': ${original_message}\n\n\nLink: https://support.delta.chat/t/${notification.slug}/${notification.topic_id}/${original_message_data.post_number}`
+    const msg = `${notification.data.original_username} said: ${original_message}\n\n\nLink: https://support.delta.chat/t/${notification.slug}/${notification.topic_id}/${original_message_data.post_number}`
+    log(`Sending message to ${email}`)
     deltachat.sendMessage(chat_id, msg)
 
   } catch (error) {
