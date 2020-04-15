@@ -147,8 +147,6 @@ router.post('/webhook', async (req, res) => {
     })
     if (! contact_id) { return res.send("OK") }
 
-    // TODO: listen for replies in topic-chats and send them to discourse.
-
     const chat_name = `Forum: ${notification.fancy_title} (${notification.topic_id})`
 
     // Find the wanted chat.

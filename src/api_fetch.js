@@ -16,20 +16,27 @@ if (notifierEnabled()) {
   }
 }
 
-const apiFetch = async (path) => {
+const apiFetch = async (path, payload, username) => {
   if (! notifierEnabled()) {
     throw new Error("notifier is not enabled in config, this function is disabled")
   }
   // Avoid double slashes
   const base_url = config.get('notifier.discourse_base_url').replace(/\/$/, "")
   const url = base_url + path
-  const response = await fetch(url, {
+  const api_username = username || config.get('notifier.api_username')
+  var params = {
     headers: {
       'Api-Key': config.get('notifier.api_key'),
-      'Api-Username': config.get('notifier.api_username'),
-      'Accept': 'application/json'
+      'Api-Username': api_username,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     }
-  })
+  }
+  if (payload) {
+    params.body = payload
+    params.method = 'POST'
+  }
+  const response = await fetch(url, params)
     .catch((error) => {
       var err = new Error('A network error happend, could not fetch resource')
       err.error = error
