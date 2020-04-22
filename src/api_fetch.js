@@ -38,7 +38,7 @@ const apiFetch = async (path, payload, username) => {
   }
   const response = await fetch(url, params)
     .catch((error) => {
-      var err = new Error('A network error happend, could not fetch resource')
+      var err = new Error('A network error happened, could not fetch resource')
       err.error = error
       throw err
     })

@@ -174,7 +174,7 @@ router.post('/webhook', async (req, res) => {
     deltachat.sendMessage(chat_id, msg)
 
   } catch (error) {
-    log('ERROR: An error happend, cannot continue:')
+    log('ERROR: An error happened, cannot continue:')
     log(error)
   }
 
