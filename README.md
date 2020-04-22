@@ -61,7 +61,7 @@ Optionally you can let users that authenticated via this bot receive discourse a
   "notifier": {
     "enabled_contact_email_addresses": ["you@example.net", "someone@example.org"],
     "discourse_base_url": "https://your-discourse-domain.example.org",
-    "api_key": "get_this_from_the_discouse_settings",
+    "api_key": "get_this_from_the_discourse_settings",
     "api_username": "user_that_owns_the_api_key"
   }
 ```
@@ -70,7 +70,7 @@ Generate an API key in your discourse instance at `/admin/api/keys`.
 
 To let the bot receive the notifications, set up a webhook in your discourse instance at `/admin/api/webhooks`. Use these values to configure it:
 
-* `Payload URL`: https://you-bot-domain.example.org/webhook
+* `Payload URL`: https://your-bot-domain.example.org/webhook
 * `Content Type`: application/json
 * `Select individual events`: Notification Event
 
