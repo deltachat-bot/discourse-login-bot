@@ -14,7 +14,7 @@
     "deltachat-node-webbot-base": "git://github.com/deltachat-bot/deltachat-node-webbot-base.git",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "sqlite3": "^4.1.0",
     "uuid": "^3.4.0"
   },
