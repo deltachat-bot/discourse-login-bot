@@ -10,7 +10,7 @@
   "author": "Delta Chat developers",
   "license": "GPL-3.0",
   "dependencies": {
-    "config": "^3.3.0",
+    "config": "^3.3.8",
     "deltachat-node-webbot-base": "git://github.com/deltachat-bot/deltachat-node-webbot-base.git",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
