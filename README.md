@@ -1,5 +1,7 @@
 # Delta Chat Discourse Login Bot
 
+> ⚠️  This project is deprecated in favor of the Rust rewrite: https://github.com/deltachat-bot/deltachat-loginbot
+
 This Delta Chat bot allows people to authenticate at a Discourse instance using their Delta Chat app.
 
 To authenticate users that want to login at your Discourse instance will be redirected to this bot's webinterface. There they must scan a QR-code using their Delta Chat app. That makes their Delta Chat email address known to the bot, which sends this email address (and the Delta Chat profile name, if present) back to the Discourse instance, where the users will be logged in without entering any credentials.
